@@ -1,0 +1,12 @@
+.grid {
+  --bs-columns: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--bs-columns), 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    --bs-columns: 3;
+  }
+}
