@@ -53,9 +53,7 @@ async function refresh() {
 
 
         renderSummary(currentExpenses);
-        // if (typeof renderChart === "function") {
-        //     renderChart(currentExpenses);
-        // }
+        renderChart(currentExpenses);
 
     } catch (error) {
         showAlert(error.message);
@@ -75,7 +73,10 @@ async function filter() {
             filterExpenses = await getExpensesByCategory(selectedCategory);
             renderTable(filterExpenses);
         }
-        else { renderTable(currentExpenses); }
+        else {
+            filterExpenses = [];
+            renderTable(currentExpenses);
+        }
 
     } catch (error) {
         showAlert(error.message);
@@ -330,58 +331,6 @@ async function handleUpdateExpense(event, id) {
     }
 }
 
-function setTheme(theme) {
-
-    document.documentElement.setAttribute('data-bs-theme', theme);
-    localStorage.setItem('preferredTheme', theme);
-
-    const navbar = document.getElementById('mainNavbar');
-    const toggleBtn = document.getElementById('themeToggleBtn');
-    const themeIcon = document.getElementById('themeIcon');
-    const themeText = document.getElementById('themeText');
-
-    if (theme === 'dark') {
-        if (navbar) {
-            navbar.classList.remove('bg-dark', 'text-white');
-            navbar.classList.add('bg-light', 'text-dark');
-            navbar.setAttribute('data-bs-theme', 'light');
-        }
-        if (toggleBtn) {
-            toggleBtn.classList.remove('btn-outline-light');
-            toggleBtn.classList.add('btn-outline-dark');
-        }
-        if (themeIcon) themeIcon.textContent = '☀️';
-        if (themeText) themeText.textContent = 'Light Mode';
-
-    } else {
-        if (navbar) {
-            navbar.classList.remove('bg-light', 'text-dark');
-            navbar.classList.add('bg-dark', 'text-white');
-            navbar.setAttribute('data-bs-theme', 'dark');
-        }
-        if (toggleBtn) {
-            toggleBtn.classList.remove('btn-outline-dark');
-            toggleBtn.classList.add('btn-outline-light');
-        }
-        if (themeIcon) themeIcon.textContent = '🌙';
-        if (themeText) themeText.textContent = 'Dark Mode';
-    }
-}
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('preferredTheme') || 'light';
-    setTheme(savedTheme);
-
-    const toggleBtn = document.getElementById('themeToggleBtn');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', toggleTheme);
-    }
-});
 
 document.addEventListener("DOMContentLoaded", () => {
     refresh();

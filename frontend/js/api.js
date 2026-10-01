@@ -128,3 +128,43 @@ async function deleteExpense(id) {
         throw error;
     }
 }
+
+//////////////////////  delete all data  ////////////////////////////////
+
+async function deleteAllExpense() {
+    try {
+        const response = await fetch(`${API_URL}`, {
+            method: "DELETE",
+
+        });
+        const result = await response.json();
+
+        if (response.status == 200) { return result; }
+        else { throw new Error(result.error); }
+
+
+    } catch (error) {
+        console.error("Error in Delete Expenses:", error.message);
+        throw error;
+    }
+}
+
+//////////////////////  delete data  ////////////////////////////////
+
+async function deleteExpenseByCategory(category) {
+    try {
+        const response = await fetch(`${API_URL}/category/${category}`, {
+            method: "DELETE",
+
+        });
+        const result = await response.json();
+
+        if (response.status == 200) { return result; }
+        else { throw new Error(result.error); }
+
+
+    } catch (error) {
+        console.error("Error in Delete Expenses:", error.message);
+        throw error;
+    }
+}

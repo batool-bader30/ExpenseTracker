@@ -126,9 +126,39 @@ app.delete('/api/expenses/:id', async (req, res) => {
   if (isNaN(id)) return res.status(404).json({ error: 'Pleas Enter ID AS A Number' });
   try {
     const result = await pool.query("DELETE FROM expenses WHERE id=$1 RETURNING id, title, amount::float8,category, to_char(date, 'YYYY-MM-DD') AS date", [id]);
-    if (result.rows.length == 0) return res.status(404).json({ error: 'data not found' });
+    if (result.rows.length == 0) return res.status(404).json({ error: 'There’s no expense to delete it' });
     res.status(200).json(result.rows[0]);
 
+  }
+  catch (err) {
+    console.error(err.message)
+    res.status(500).json({ error: 'Server Error' });
+  }
+});
+
+//   DELETE /api/expenses/category    delete expense By Category (200, or 404)
+
+app.delete('/api/expenses/category/:category', async (req, res) => {
+  const { category } = req.params;
+  try {
+    const result = await pool.query("DELETE FROM expenses WHERE category=$1 RETURNING id, title, amount::float8,category, to_char(date, 'YYYY-MM-DD') AS date", [category]);
+    if (result.rows.length == 0) return res.status(404).json({ error: 'There’s no expense to delete it' });
+    res.status(200).json({ message: "deleted successfully" });
+
+  }
+  catch (err) {
+    console.error(err.message)
+    res.status(500).json({ error: 'Server Error' });
+  }
+});
+
+//   DELETE /api/expenses    delete all expense (200, or 404)
+
+app.delete('/api/expenses', async (req, res) => {
+  try {
+    const result = await pool.query("DELETE FROM expenses RETURNING id, title, amount::float8,category, to_char(date, 'YYYY-MM-DD') AS date");
+    if (result.rows.length == 0) return res.status(404).json({ error: 'There’s no expense to delete it' });
+    res.status(200).json({ message: "deleted successfully" });
   }
   catch (err) {
     console.error(err.message)
