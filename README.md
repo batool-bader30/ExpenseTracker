@@ -40,7 +40,6 @@ Expense Tracker is a web application that allows users to manage their expenses 
 
 ![Expense Tracker Mobile](frontend/UI-screenshots/mobile.png)
 ![Expense Tracker Mobile](frontend/UI-screenshots/mobile2.png)
-![Expense Tracker Mobile](frontend/UI-screenshots/mobile3.png)
 
 ## What was the hardest part?
 
