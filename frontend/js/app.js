@@ -188,6 +188,9 @@ async function handleDelete(expenseId) {
 async function handleAddExpense(event) {
     if (event) event.preventDefault();
 
+    // 1️⃣ إزالة كلاس الأحادي من جميع الحقول أولاً لإعادة تقييمها بشكل صحيح
+    resetValidation();
+
     const titleInput = document.getElementById("title");
     const amountInput = document.getElementById("amount");
     const categoryInput = document.getElementById("category");
@@ -197,7 +200,6 @@ async function handleAddExpense(event) {
     const amount = parseFloat(amountInput.value);
     const category = categoryInput.value.trim();
     const date = dateInput.value.trim();
-
 
     let isValid = true;
 
@@ -240,6 +242,8 @@ async function handleAddExpense(event) {
         showSpinner(false);
     }
 }
+
+
 function resetValidation() {
     const inputs = document.querySelectorAll("#expenseForm .form-control, #expenseForm .form-select");
     inputs.forEach(input => input.classList.remove("is-invalid"));
@@ -265,21 +269,21 @@ async function updateModal(id) {
         <div class="row">
           <!-- Title -->
           <div class="mb-3 col-12">
-            <label for="updateTitle" class="form-label">Title</label>
+            <label for="updateTitle" class="form-label">Title<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="updateTitle" value="${item.title}" required>
             <div class="invalid-feedback">Title is required.</div>
           </div>
 
           <!-- Amount -->
           <div class="mb-3 col-12 col-md-6">
-            <label for="updateAmount" class="form-label">Amount</label>
+            <label for="updateAmount" class="form-label">Amount<span class="text-danger">*</span></label>
             <input type="number" step="0.01" class="form-control" id="updateAmount" value="${item.amount}" required>
             <div class="invalid-feedback">Enter an amount greater than 0.</div>
           </div>
 
           <!-- Category -->
           <div class="mb-3 col-12 col-md-6">
-            <label for="updateCategory" class="form-label">Category</label>
+            <label for="updateCategory" class="form-label">Category<span class="text-danger">*</span></label>
             <select id="updateCategory" class="form-select" required>
              <option value="">Choose...</option>
               <option value="Food" ${item.category === 'Food' ? 'selected' : ''}>Food</option>
@@ -293,7 +297,7 @@ async function updateModal(id) {
 
           <!-- Date -->
           <div class="mb-3 col-12">
-            <label for="updateDate" class="form-label">Date</label>
+            <label for="updateDate" class="form-label">Date<span class="text-danger">*</span></label>
             <input type="date" class="form-control" id="updateDate" value="${item.date}" required>
             <div class="invalid-feedback">Date is required.</div>
           </div>
@@ -308,6 +312,7 @@ async function updateModal(id) {
 
 async function handleUpdateExpense(event, id) {
     if (event) event.preventDefault();
+    resetValidation();
 
     const titleInput = document.getElementById("updateTitle");
     const amountInput = document.getElementById("updateAmount");
@@ -352,6 +357,7 @@ async function handleUpdateExpense(event, id) {
 
         const modalElement = document.getElementById("update");
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        resetValidation();
         if (modalInstance) modalInstance.hide();
 
         refresh();

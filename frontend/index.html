@@ -74,21 +74,21 @@
           <div class="row">
             <!-- Title -->
             <div class="mb-3 col-lg-4 col-8">
-              <label for="title" class="form-label">Title</label>
+              <label for="title" class="form-label">Title<span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="title" placeholder="Lunch" required>
               <div class="invalid-feedback">Title is required.</div>
             </div>
 
             <!-- Amount -->
             <div class="mb-3 col-4 col-lg-2">
-              <label for="amount" class="form-label">Amount</label>
+              <label for="amount" class="form-label">Amount<span class="text-danger">*</span></label>
               <input type="number" class="form-control" id="amount" placeholder="30.50" required>
               <div class="invalid-feedback">Enter an amount greater than 0.</div>
             </div>
 
             <!-- Category -->
             <div class="mb-3 col-6 col-lg-3">
-              <label for="category" class="form-label">Category</label>
+              <label for="category" class="form-label">Category<span class="text-danger">*</span></label>
               <select id="category" name="category" class="form-select" required>
                 <option value="">Choose...</option>
                 <option value="Food">Food</option>
@@ -102,7 +102,7 @@
 
             <!-- Date -->
             <div class="mb-3 col-6 col-lg-3">
-              <label for="date" class="form-label">Date</label>
+              <label for="date" class="form-label">Date<span class="text-danger">*</span></label>
               <input type="date" class="form-control" id="date" required>
               <div class="invalid-feedback">Date is required.</div>
             </div>
