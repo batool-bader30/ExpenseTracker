@@ -11,6 +11,7 @@ function showSpinner(show) {
 }
 
 ////////////////// alert manage //////////////
+
 function showAlert(message, type = "danger") {
     const alertBox = document.getElementById("errorAlert");
     const alertMessage = document.getElementById("alertMessage");
@@ -22,12 +23,14 @@ function showAlert(message, type = "danger") {
             alertMessage.textContent = message;
         }
 
-        alertBox.classList.remove("alert-danger", "alert-success", "alert-warning", "alert-info");
+        alertBox.classList.remove("alert-danger", "alert-success");
 
         alertBox.classList.add(`alert-${type}`);
         alertBox.classList.remove("d-none");
     }
 }
+
+////////////////// hide alert ///////////////
 
 function hideAlert() {
     const alertBox = document.getElementById("errorAlert");
@@ -37,9 +40,9 @@ function hideAlert() {
 }
 
 
+////////////////// refresh  ///////////////////
 
 let currentExpenses = [];
-let filterExpenses = [];
 async function refresh() {
     document.getElementById("categoryFilter").value = "all";
     showSpinner(true);
@@ -62,6 +65,9 @@ async function refresh() {
     }
 }
 
+////////////////// filter  ///////////////////
+
+let filterExpenses = [];
 async function filter() {
     const selectedCategory = document.getElementById("categoryFilter").value.trim();
 
@@ -87,6 +93,9 @@ async function filter() {
 
 document.getElementById("categoryFilter")?.addEventListener("change", filter);
 
+
+////////////////// render table  ///////////////////
+
 function renderTable(list) {
     const tbody = document.getElementById("expensesTableBody")
     tbody.innerHTML = '';
@@ -98,9 +107,9 @@ function renderTable(list) {
         tr.innerHTML = `
         <td>${element.title}</td>
         <td><div class="text-end">${formattedAmount}</div></td>
-        <td><div class="badge text-bg-success text-wrap" >
-          ${element.category}
-        </div></td>
+        <td><div class="badge ${getCategoryBadgeClass(element.category)} text-white text-wrap">
+        ${element.category}
+          </div></td>
         <td>${element.date}</td>
         <td><div class="m-1 d-flex gap-1 justify-content-end">
         <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" onclick= "updateModal('${element.id}')" data-bs-target="#update">Edit</button>
@@ -112,6 +121,21 @@ function renderTable(list) {
 
 }
 
+function getCategoryBadgeClass(category) {
+    switch (category?.toLowerCase()) {
+        case 'food':
+            return 'text-bg-success';
+        case 'transport':
+            return 'text-bg-primary';
+        case 'bills':
+            return 'text-bg-warning';
+        case 'entertainment':
+            return 'text-bg-info';
+        default:
+            return 'text-bg-secondary';
+    }
+}
+////////////////// render summary  ///////////////////
 
 function renderSummary(list) {
     const totalAmount = document.getElementById("totalAmount")
@@ -143,6 +167,7 @@ function renderSummary(list) {
 }
 
 
+////////////////// delete expenses  ///////////////////
 
 async function handleDelete(expenseId) {
     showSpinner(true);
@@ -157,6 +182,8 @@ async function handleDelete(expenseId) {
     }
 
 }
+////////////////// add expense  ///////////////////
+
 
 async function handleAddExpense(event) {
     if (event) event.preventDefault();
@@ -223,6 +250,9 @@ if (expenseForm) {
     expenseForm.addEventListener("submit", handleAddExpense);
 }
 
+////////////////// update expense  ///////////////////
+////////////////// update modal  ///////////////////
+
 async function updateModal(id) {
     const item = await getExpensesById(id)
     if (!item) return;
@@ -273,6 +303,8 @@ async function updateModal(id) {
 <button type="button" class="btn btn-primary" onclick="handleUpdateExpense(event, '${item.id}')">Save Changes</button> </div>   `;
 
 }
+
+////////////////// update  ///////////////////
 
 async function handleUpdateExpense(event, id) {
     if (event) event.preventDefault();

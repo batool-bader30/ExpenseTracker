@@ -1,4 +1,5 @@
-///////////
+
+////////////// export Expenses To CSV  ////////////////////
 
 function exportExpensesToCSV() {
     const selectedCategory = document.getElementById("categoryFilter")?.value.trim();
@@ -43,6 +44,8 @@ function exportExpensesToCSV() {
 document.getElementById("exportCsvBtn")?.addEventListener("click", exportExpensesToCSV);
 
 
+////////////// Delete all Expenses  ////////////////////
+
 async function deleteAll() {
     const selectedCategory = document.getElementById("categoryFilter").value.trim();
 
@@ -65,6 +68,8 @@ async function deleteAll() {
 document.getElementById("deleteAll")?.addEventListener("click", deleteAll);
 
 
+
+////////////// theme  ////////////////////
 
 function setTheme(theme) {
 
@@ -122,13 +127,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+////////////// chart  ////////////////////
 let myChart = null;
+
+function getCategoryColor(category) {
+    switch (category?.toLowerCase()) {
+        case 'food':
+            return '#198754';
+        case 'transport':
+            return '#0d6efd';
+        case 'bills':
+            return '#ffc107';
+        case 'entertainment':
+            return '#0dcaf0';
+        default:
+            return '#6c757d';
+    }
+}
 
 function renderChart(expenses) {
     const chartCard = document.getElementById('chartCard');
     const ctx = document.getElementById('expensesChart')?.getContext('2d');
 
-    // 1. إذا كانت القائمة فارغة أو غير موجودة -> إخفاء الكارد وتدمير الرسم القديم
     if (!expenses || expenses.length === 0) {
         if (chartCard) chartCard.classList.add('d-none');
         if (myChart) {
@@ -138,10 +159,8 @@ function renderChart(expenses) {
         return;
     }
 
-    // 2. إذا توفرت مصاريف -> إظهار الكارد بإزالة d-none
     if (chartCard) chartCard.classList.remove('d-none');
 
-    // تجميع المبالغ حسب الفئة
     const categoryTotals = {};
     expenses.forEach(exp => {
         const cat = exp.category || 'Other';
@@ -152,14 +171,12 @@ function renderChart(expenses) {
     const labels = Object.keys(categoryTotals);
     const data = Object.values(categoryTotals);
 
-    const backgroundColors = [
-        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
-    ];
+    const dynamicColors = labels.map(label => getCategoryColor(label));
 
-    // 3. تحديث الرسم البياني أو إنشائه
     if (myChart) {
         myChart.data.labels = labels;
         myChart.data.datasets[0].data = data;
+        myChart.data.datasets[0].backgroundColor = dynamicColors; 
         myChart.update();
     } else if (ctx) {
         myChart = new Chart(ctx, {
@@ -168,7 +185,7 @@ function renderChart(expenses) {
                 labels: labels,
                 datasets: [{
                     data: data,
-                    backgroundColor: backgroundColors.slice(0, labels.length),
+                    backgroundColor: dynamicColors, 
                     borderWidth: 2,
                     hoverOffset: 6
                 }]
@@ -188,7 +205,7 @@ function renderChart(expenses) {
                         callbacks: {
                             label: function (context) {
                                 const value = context.raw || 0;
-                                return ` ${context.label}: ${value.toFixed(2)}`;
+                                return ` ${context.label}: $${value.toFixed(2)}`;
                             }
                         }
                     }
