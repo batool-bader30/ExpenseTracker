@@ -18,7 +18,7 @@ function showAlert(message, type = "danger") {
 
     if (alertBox && alertMessage) {
         if (!message || message.includes("Failed to fetch") || message.includes("NetworkError")) {
-            alertMessage.textContent = "Unable to connect to the server. Please check if the server is running.";
+            alertMessage.textContent = "Unable to connect to the server.";
         } else {
             alertMessage.textContent = message;
         }
@@ -53,8 +53,6 @@ async function refresh() {
         currentExpenses = await getExpenses();
 
         renderTable(currentExpenses);
-
-
         renderSummary(currentExpenses);
         renderChart(currentExpenses);
 
@@ -188,7 +186,6 @@ async function handleDelete(expenseId) {
 async function handleAddExpense(event) {
     if (event) event.preventDefault();
 
-    // 1️⃣ إزالة كلاس الأحادي من جميع الحقول أولاً لإعادة تقييمها بشكل صحيح
     resetValidation();
 
     const titleInput = document.getElementById("title");
@@ -245,7 +242,7 @@ async function handleAddExpense(event) {
 
 
 function resetValidation() {
-    const inputs = document.querySelectorAll("#expenseForm .form-control, #expenseForm .form-select");
+    const inputs = document.querySelectorAll(".is-invalid");
     inputs.forEach(input => input.classList.remove("is-invalid"));
 }
 
@@ -357,9 +354,9 @@ async function handleUpdateExpense(event, id) {
 
         const modalElement = document.getElementById("update");
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        resetValidation();
         if (modalInstance) modalInstance.hide();
 
+        resetValidation();
         refresh();
         showAlert("Expense updated successfully!", "success");
     } catch (error) {

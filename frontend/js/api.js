@@ -1,6 +1,5 @@
 
-const API_URL = "http://localhost:3000/api/expenses";
-
+const API_URL = "https://expensetracker-7rex.onrender.com/api/expenses";
 
 //////////////////////  get data  ////////////////////////////////
 async function getExpenses() {
@@ -12,8 +11,6 @@ async function getExpenses() {
         else {
             throw new Error(result.error || "Failed to fetch expenses from server");
         }
-
-
 
     } catch (error) {
         console.error("Error in Get Expenses:", error.message);

@@ -4,7 +4,7 @@
 function exportExpensesToCSV() {
     const selectedCategory = document.getElementById("categoryFilter")?.value.trim();
 
-    const listToExport = (selectedCategory && selectedCategory !== "all")
+    const listToExport = (selectedCategory  !== "all")
         ? filterExpenses
         : currentExpenses;
 
