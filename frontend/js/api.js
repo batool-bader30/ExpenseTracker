@@ -1,5 +1,5 @@
 
-const API_URL = "http://localhost:3000/api/expenses";
+const API_URL = "https://expensetracker-7rex.onrender.com/api/expenses";
 
 
 //////////////////////  get data  ////////////////////////////////
